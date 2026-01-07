@@ -20,7 +20,7 @@ GITHUB_FOLDER = "up"
 CACHE_FOLDER = "/tmp/uploads"
 os.makedirs(CACHE_FOLDER, exist_ok=True)
 
-# hellp
+
 def upload_to_github(file, filename):
     content = file.read()
     content_b64 = base64.b64encode(content).decode("utf-8")
@@ -178,7 +178,7 @@ def update_student(id):
     add_local_url(student)
     return jsonify(student)
 
-
+#hello
 @app.route("/entries/<id>", methods=["DELETE"])
 def remove_student(id):
     student = students.find_one({"_id": ObjectId(id)})
