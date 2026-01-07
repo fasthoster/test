@@ -50,26 +50,31 @@ def upload_to_github(file, filename):
 
 def cache_images_from_github():
     for student in students.find({"image_url": {"$exists": True}}):
-        github_url = student.get("image_url")
-        if github_url:
-            ext = os.path.splitext(github_url)[-1]
-            filename = f"{student['_id']}{ext}"
-            local_path = os.path.join(CACHE_FOLDER, filename)
+        github_url = student["image_url"]
 
-            if not os.path.exists(local_path):
-                try:
-                    r = requests.get(github_url)
-                    if r.status_code == 200:
-                        with open(local_path, "wb") as f:
-                            f.write(r.content)
-                        # Update student with cached URL
-                        students.update_one(
-                            {"_id": student["_id"]},
-                            {"$set": {"local_image_url": f"/cache/{filename}"}}
-                        )
-                        print(f"Cached image: {filename}")
-                except Exception as e:
-                    print(f"Failed to cache {github_url}: {e}")
+        ext = os.path.splitext(github_url)[-1]
+        filename = f"{student['_id']}{ext}"
+        local_path = os.path.join(CACHE_FOLDER, filename)
+
+        if os.path.exists(local_path):
+            continue
+
+        try:
+            r = requests.get(github_url, timeout=10)
+            if r.status_code == 200:
+                with open(local_path, "wb") as f:
+                    f.write(r.content)
+
+                students.update_one(
+                    {"_id": student["_id"]},
+                    {"$set": {"local_image_url": f"/cache/{filename}"}}
+                )
+
+                print(f"Cached: {filename}")
+            else:
+                print(f"Failed to fetch {github_url}")
+        except Exception as e:
+            print(f"Error caching {github_url}: {e}")
 
 
 def full_url(path: str) -> str:
