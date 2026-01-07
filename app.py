@@ -49,6 +49,7 @@ def upload_to_github(file, filename):
 
 
 def cache_images_from_github():
+    print("starting")
     for student in students.find({"image_url": {"$exists": True}}):
         github_url = student["image_url"]
 
@@ -75,7 +76,7 @@ def cache_images_from_github():
                 print(f"Failed to fetch {github_url}")
         except Exception as e:
             print(f"Error caching {github_url}: {e}")
-
+    print("ending")
 
 def full_url(path: str) -> str:
     host_url = request.url_root.rstrip("/")
