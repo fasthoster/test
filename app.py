@@ -70,7 +70,7 @@ def cache_images_from_github():
                     {"$set": {"local_image_url": f"/cache/{filename}"}}
                 )
 
-                print(f"Cached: {filename}")
+                print(f"Cached image: {filename}")
             else:
                 print(f"Failed to fetch {github_url}")
         except Exception as e:
