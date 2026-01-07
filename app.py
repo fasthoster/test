@@ -197,7 +197,7 @@ def remove_student(id):
 
 print("Caching GitHub images...")
 cache_images_from_github()
-print("Cache ready! test")
+print("Cache ready!")
 
 if __name__ == "__main__":
     app.run(debug=True)
