@@ -178,7 +178,7 @@ def update_student(id):
     add_local_url(student)
     return jsonify(student)
 
-#hello
+
 @app.route("/entries/<id>", methods=["DELETE"])
 def remove_student(id):
     student = students.find_one({"_id": ObjectId(id)})
